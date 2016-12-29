@@ -19,6 +19,7 @@ import InfoService from "../services/InfoService";
 import {setInfos} from "../actions/InfoActions";
 import {
     loadLocalInfo,
+    resetLoadLocalInfoStatus,
     backupInfo,
     resetBackupInfoStatus,
     restoreInfo,
@@ -132,8 +133,8 @@ class InfoListView extends ListBaseView {
                 Notice.show(this.locale.notice.infoIsEmpty);
             } else {
                 this.props.dispatch(setInfos(nextProps.loadLocalInfos));
-                this.props.dispatch(changeActiveCategory(nextProps.categories[0]));
             }
+            this.props.dispatch(resetLoadLocalInfoStatus())
         }
     }
 
@@ -246,13 +247,15 @@ class InfoListView extends ListBaseView {
 
 function select(state) {
     let categories = InfoService.getInfoCategories(state.info.infos),
-        currentInfos = InfoService.filterInfoByCategory(state.info.infos, state.infoListView.activeCategory);
+        activeCategory = state.infoListView.activeCategory ? state.infoListView.activeCategory :
+                                                             categories.length > 0 ? categories[0].name : "";
+        currentInfos = InfoService.filterInfoByCategory(state.info.infos, activeCategory);
 
     return {
         userPassword: state.user.password,
         infos: currentInfos,
         categories: categories,
-        activeCategory: state.infoListView.activeCategory,
+        activeCategory: activeCategory,
         loadLocalInfos: state.infoListView.loadLocalInfos,
         loadLocalInfoStatus: state.infoListView.loadLocalInfoStatus,
         backupInfoStatus: state.infoListView.backupInfoStatus,

@@ -43,7 +43,7 @@ class InfoService extends BaseService {
         });
     }
 
-    buildNewInfo() {
+    buildEmptyInfo() {
         return {id: (new Date()).getTime(), title: "", category: "", details: []};
     }
 

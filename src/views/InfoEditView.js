@@ -11,11 +11,12 @@ import RouteService from "../services/RouteService";
 import InfoService from "../services/InfoService";
 import tools from "../tools";
 import {
-    createNewInfo,
-    resetCreateInfoStatus,
+    setCurrentInfo,
+    addDetailItem,
     saveInfoToLocal,
     resetSaveInfoToLocalStatus
-} from "../actions/InfoActions";
+} from "../actions/InfoEditViewActions";
+import {createNewInfo, resetCreateInfoStatus} from "../actions/InfoActions";
 
 const style = StyleSheet.create({
     container: {
@@ -82,40 +83,28 @@ class InfoEditView extends ListBaseView {
     }];
 
     handleEditDetailResult = (action, data) => {
-        let currentInfo = this.state.currentInfo,
-            details = currentInfo.details;
-
         if (action === "add") {
             let newItem = InfoService.buildNewDetailItem(data);
-            details.push(newItem);
-            this.setState({currentInfo: currentInfo})
+            this.props.dispatch(addDetailItem(newItem));
         }
 
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {currentInfo: null};
-    }
-
     componentDidMount() {
         if (this.props.param.action === "add") {
-            this.setState({currentInfo: InfoService.buildNewInfo()});
+            this.props.dispatch(setCurrentInfo(InfoService.buildEmptyInfo()));
         }
     }
 
-    shouldComponentUpdate(nextState, nextProps) {
-        if (nextState.createNewInfoStatus === StatusCode.createNewInfoFinish) {
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.createNewInfoStatus === StatusCode.createNewInfoFinish) {
             this.props.dispatch(resetCreateInfoStatus());
-            setTimeout(() => {
-                this.props.dispatch(saveInfoToLocal(this.props.infos, this.props.userPassword));
-            }, 0)
+            this.props.dispatch(saveInfoToLocal(nextProps.infos, nextProps.userPassword));
         }
 
-        if (nextState.saveInfoToLocalStatus === StatusCode.saveInfoToLocalSuccess) {
+        if (nextProps.saveInfoToLocalStatus === StatusCode.saveInfoToLocalSuccess) {
             this.afterEditInfo();
         }
-        return true;
     }
 
     afterEditInfo() {
@@ -124,7 +113,7 @@ class InfoEditView extends ListBaseView {
         setTimeout(() => {
             self.props.dispatch(resetSaveInfoToLocalStatus());
             self.props.navigator.pop();
-        }, 1500);
+        }, 1200);
     }
 
     handleClickToolbar(position) {
@@ -136,7 +125,7 @@ class InfoEditView extends ListBaseView {
     saveInfo() {
         let title = this.refs.title.getValue(),
             category = this.refs.category.getValue(),
-            newInfo = this.state.currentInfo;
+            currentInfo = this.props.currentInfo;
 
         if (tools.isEmpty(title)) {
             Notice.show(this.locale.notice.titleCantBeEmpty);
@@ -147,10 +136,9 @@ class InfoEditView extends ListBaseView {
             Notice.show(this.locale.notice.categoryCantBeEmpty);
             return;
         }
-        newInfo.title = title;
-        newInfo.category = category;
-
-        this.props.dispatch(createNewInfo(newInfo))
+        currentInfo.title = title;
+        currentInfo.category = category;
+        this.props.dispatch(createNewInfo(currentInfo));
     }
 
     addInfoDetailItem() {
@@ -170,8 +158,7 @@ class InfoEditView extends ListBaseView {
     }
 
     render() {
-        let currentInfo = this.state.currentInfo,
-            details = this.createListDataSource(currentInfo ? currentInfo.details : null),
+        let details = this.createListDataSource(this.props.currentInfo.details),
             title = this.getTitle();
 
         return (
@@ -222,7 +209,8 @@ function select(state) {
         userPassword: state.user.password,
         infos: state.info.infos,
         createNewInfoStatus: state.info.createNewInfoStatus,
-        saveInfoToLocalStatus: state.info.saveInfoToLocalStatus
+        currentInfo: state.infoEditView.currentInfo,
+        saveInfoToLocalStatus: state.infoEditView.saveInfoToLocalStatus
     }
 }
 

@@ -22,7 +22,9 @@ function infoList(state = initState, action) {
                 loadLocalInfos: action.infos ? action.infos : {}
             };
         case InfoListActions.LOAD_LOCAL_INFO_FAILED:
-            return {...state, loadLocalInfoStatus: StatusCode.loadLocalInfoFailed}
+            return {...state, loadLocalInfoStatus: StatusCode.loadLocalInfoFailed};
+        case InfoListActions.RESET_LOAD_LOCAL_INFO_STATUS:
+            return {...state, loadLocalInfoStatus: null};
 
         case InfoListActions.BACKUP_INFO_BEGIN:
             return {...state, backupInfoStatus: StatusCode.backupInfoBegin};

@@ -3,6 +3,7 @@ import InfoService from "../services/InfoService";
 const LOAD_LOACAL_INFO_BEGIN = "Load Local Info Begin";
 const LOAD_LOCAL_INFO_SUCCESS = "Load Local Info Success";
 const LOAD_LOCAL_INFO_FAILED = "Load Local Info Failed";
+const RESET_LOAD_LOCAL_INFO_STATUS = "Reset Load Local Info Status";
 
 function loadLocalInfoBegin() {
     return {type: LOAD_LOACAL_INFO_BEGIN};
@@ -14,6 +15,10 @@ function loadLocalInfoSuccess(infos, labels) {
 
 function loadLocalInfoFailed() {
     return {type: LOAD_LOCAL_INFO_FAILED};
+}
+
+function resetLoadLocalInfoStatus() {
+    return {type: RESET_LOAD_LOCAL_INFO_STATUS};
 }
 
 function loadLocalInfo(password) {
@@ -108,7 +113,9 @@ export {
     LOAD_LOACAL_INFO_BEGIN,
     LOAD_LOCAL_INFO_SUCCESS,
     LOAD_LOCAL_INFO_FAILED,
+    RESET_LOAD_LOCAL_INFO_STATUS,
     loadLocalInfo,
+    resetLoadLocalInfoStatus,
 
     BACKUP_INFO_BEGIN,
     BACKUP_INFO_SUCCESS,
