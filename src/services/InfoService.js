@@ -120,6 +120,29 @@ class InfoService extends BaseService {
             }
         });
     }
+
+    getInfoCategories(infos) {
+        let result = [],
+            id = 1;
+
+        for(let key in infos) {
+            let item = infos[key];
+            result.push({name: item.category, id: id++});
+        }
+        return result;
+    }
+
+    filterInfoByCategory(infos, category) {
+        let result = [];
+
+        for(let key in infos) {
+            let item = infos[key];
+            if (item.category === category) {
+                result.push({...item});
+            }
+        }
+        return result;
+    }
 }
 
 let infoServiceInstance = new InfoService();

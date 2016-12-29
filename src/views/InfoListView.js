@@ -15,6 +15,8 @@ import ListBaseView from "./ListBaseView";
 import ColorConfig from "../configs/ColorConfig";
 import StatusCode from "../configs/StatusCode";
 import RouteService from "../services/RouteService";
+import InfoService from "../services/InfoService";
+import {setInfos} from "../actions/InfoActions";
 import {
     loadLocalInfo,
     backupInfo,
@@ -22,7 +24,7 @@ import {
     restoreInfo,
     reseetRestoreStatus,
     changeActiveCategory
-} from "../actions/InfoActions";
+} from "../actions/InfoListViewActions";
 import {
     InfoListItem,
     CategoryListItem,
@@ -124,13 +126,15 @@ class InfoListView extends ListBaseView {
         this.props.dispatch(loadLocalInfo(this.props.userPassword));
     }
 
-    shouldComponentUpdate(nextState, nextProps) {
-        if (nextState.restoreInfoStatus === StatusCode.restoreInfoSuccess) {
-            this.props.dispatch(reseetRestoreStatus());
-            this.props.dispatch(loadLocalInfo(this.props.userPassword));
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.loadLocalInfoStatus === StatusCode.loadLocalInfoSuccess) {
+            if (Object.keys(nextProps.loadLocalInfos).length === 0) {
+                Notice.show(this.locale.notice.infoIsEmpty);
+            } else {
+                this.props.dispatch(setInfos(nextProps.loadLocalInfos));
+                this.props.dispatch(changeActiveCategory(nextProps.categories[0]));
+            }
         }
-
-        return true;
     }
 
     onClickOpenDrawer() {
@@ -178,40 +182,7 @@ class InfoListView extends ListBaseView {
 
     render() {
         let isShowLoading = this.shouldShowLoading(),
-            infos = this.props.infos,
-            loadLocalInfoStatus = this.props.loadLocalInfoStatus,
-            backupInfoStatus = this.props.backupInfoStatus,
-            restoreInfoStatus = this.props.restoreInfoStatus,
-            listData = this.createListDataSource(null);
-
-        if (loadLocalInfoStatus === StatusCode.loadLocalInfoSuccess) {
-            if (infos.length === 0 && this.isFirstLoadingLocalInfo) {
-                Notice.show(this.locale.notice.infoIsEmpty);
-                this.isFirstLoadingLocalInfo = false;
-            } else {
-                listData = this.createListDataSource(infos);
-            }
-        } else if (loadLocalInfoStatus === StatusCode.loadLocalInfoFailed) {
-            Notice.show(this.locale.notice.loadLocalInfoFailed);
-        }
-
-        if (backupInfoStatus !== null) {
-            if (backupInfoStatus === StatusCode.backupInfoFailed) {
-                if (this.props.backupStatusCode === StatusCode.fileNotExist) {
-                    Notice.show(this.locale.notice.backupFileNotExist);
-                } else {
-                    Notice.show(this.locale.notice.backupFailed);
-                }
-            } else if (backupInfoStatus === StatusCode.backupInfoSuccess) {
-                Notice.show(this.locale.notice.backupSuccess);
-            }
-            this.props.dispatch(resetBackupInfoStatus());
-        }
-
-        if (restoreInfoStatus === StatusCode.restoreInfoFailed) {
-            Notice.show(this.locale.notice.restoreInfoFailed);
-        }
-
+            listData = this.createListDataSource(this.props.infos);
 
         return (
             <DrawerLayoutAndroid
@@ -274,35 +245,19 @@ class InfoListView extends ListBaseView {
 }
 
 function select(state) {
-    let categories = [],
-        activeCategory = state.info.activeCategory,
-        infos = [];
-        id = 1;
-
-    for(let key in state.info.infos) {
-        let item = state.info.infos[key];
-        categories.push({id: id++, name: item.category});
-    }
-
-    if (activeCategory === null && categories.length > 0) {
-        activeCategory = categories[0].name;
-    }
-    for(let key in state.info.infos) {
-        let item = state.info.infos[key];
-        if (item.category === activeCategory) {
-            infos.push(item);
-        }
-    }
+    let categories = InfoService.getInfoCategories(state.info.infos),
+        currentInfos = InfoService.filterInfoByCategory(state.info.infos, state.infoListView.activeCategory);
 
     return {
         userPassword: state.user.password,
-        infos: infos,
+        infos: currentInfos,
         categories: categories,
-        activeCategory: activeCategory,
-        loadLocalInfoStatus: state.info.loadLocalInfoStatus,
-        backupInfoStatus: state.info.backupInfoStatus,
-        backupStatusCode: state.info.backupStatusCode,
-        restoreInfoStatus: state.info.restoreInfoStatus
+        activeCategory: state.infoListView.activeCategory,
+        loadLocalInfos: state.infoListView.loadLocalInfos,
+        loadLocalInfoStatus: state.infoListView.loadLocalInfoStatus,
+        backupInfoStatus: state.infoListView.backupInfoStatus,
+        backupStatusCode: state.infoListView.backupStatusCode,
+        restoreInfoStatus: state.infoListView.restoreInfoStatus
     }
 }
 
