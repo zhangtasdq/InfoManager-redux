@@ -10,12 +10,8 @@ import {FormControl, Notice, InfoDetailItem} from "../components";
 import RouteService from "../services/RouteService";
 import InfoService from "../services/InfoService";
 import tools from "../tools";
-import {
-    setCurrentInfo,
-    addDetailItem,
-    saveInfoToLocal,
-    resetSaveInfoToLocalStatus
-} from "../actions/InfoEditViewActions";
+import {saveInfoToLocal, resetSaveInfoToLocalStatus} from "../actions/InfoActions";
+import {setCurrentInfo, addDetailItem} from "../actions/InfoEditViewActions";
 import {createNewInfo, resetCreateInfoStatus} from "../actions/InfoActions";
 
 const style = StyleSheet.create({
@@ -206,9 +202,9 @@ function select(state) {
     return {
         userPassword: state.user.password,
         infos: state.info.infos,
+        saveInfoToLocalStatus: state.info.saveInfoToLocalStatus,
         createNewInfoStatus: state.info.createNewInfoStatus,
         currentInfo: state.infoEditView.currentInfo,
-        saveInfoToLocalStatus: state.infoEditView.saveInfoToLocalStatus
     }
 }
 

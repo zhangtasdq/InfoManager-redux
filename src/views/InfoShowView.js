@@ -7,7 +7,13 @@ import ListBaseView from "./ListBaseView";
 import ColorConfig from "../configs/ColorConfig";
 import StatusCode from "../configs/StatusCode";
 import {Notice, ConfirmDialog, InfoDetailExpandItem, Loading} from "../components";
-import {getInfoItem, deleteInfoItem, resetDeleteInfoItemStatus} from "../actions/InfoActions";
+import {
+    deleteInfoItem,
+    resetDeleteInfoStatus,
+    saveInfoToLocal,
+    resetSaveInfoToLocalStatus
+} from "../actions/InfoActions";
+import {setCurrentItem} from "../actions/InfoShowViewActions";
 
 
 const style = StyleSheet.create({
@@ -78,22 +84,6 @@ const style = StyleSheet.create({
 class InfoShowView extends ListBaseView {
     viewName = "infoShowView";
 
-    constructor() {
-        super();
-        this.state = {showConfirmDeleteDialog: false};
-    }
-
-    componentDidMount() {
-        this.props.dispatch(getInfoItem(this.props.param.showId));
-    }
-
-    shouldComponentUpdate(nextState, nextProps) {
-        if (nextState.deleteInfoStatus === StatusCode.deleteInfoItemSuccess) {
-            this.handleAfterDeleteInfo();
-        }
-        return true;
-    }
-
     deleteInfo = () => {
         this.setState({showConfirmDeleteDialog: true});
     }
@@ -104,13 +94,32 @@ class InfoShowView extends ListBaseView {
 
     handleDeleteInfo = () => {
         this.setState({showConfirmDeleteDialog: false});
-        this.props.dispatch(deleteInfoItem(this.props.allInfos, this.props.userPassword, this.props.param.showId));
+        this.props.dispatch(deleteInfoItem(this.props.param.showId));
+    }
+
+    constructor() {
+        super();
+        this.state = {showConfirmDeleteDialog: false};
+    }
+
+    componentDidMount() {
+        this.props.dispatch(setCurrentItem(this.props.param.showId));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish) {
+            this.props.dispatch(resetDeleteInfoStatus());
+            this.props.dispatch(saveInfoToLocal(this.props.allInfos, this.props.userPassword));
+        }
+        if (nextProps.saveInfoToLocalStatus === StatusCode.saveInfoToLocalSuccess) {
+            this.handleAfterDeleteInfo();
+        }
     }
 
     handleAfterDeleteInfo() {
-        this.props.dispatch(resetDeleteInfoItemStatus());
+        this.props.dispatch(resetSaveInfoToLocalStatus());
         Notice.show(this.locale.notice.deleteSuccess);
-        setTimeout(() => this.goBack(), 1500);
+        setTimeout(() => this.goBack(), 1000);
     }
 
     editInfo = () => {
@@ -203,11 +212,14 @@ class InfoShowView extends ListBaseView {
 };
 
 function select(state) {
+    let currentInfoItem = state.info.infos[state.infoShowView.currentItemId];
+
     return {
         allInfos: state.info.infos,
+        deleteInfoStatus: state.info.deleteInfoStatus,
+        saveInfoToLocalStatus: state.info.saveInfoToLocalStatus,
         userPassword: state.user.password,
-        currentInfoItem: state.info.currentInfoItem,
-        deleteInfoStatus: state.info.deleteInfoStatus
+        currentInfoItem: currentInfoItem
     }
 
 }

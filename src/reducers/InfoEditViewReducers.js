@@ -1,10 +1,7 @@
 import * as InfoEditActions from "../actions/InfoEditViewActions";
-import StatusCode from "../configs/StatusCode";
-import Notice from "../components/Notice";
 
 const initState = {
-    currentInfo: {},
-    saveInfoToLocalStatus: null
+    currentInfo: {}
 };
 
 function infoEdit(state = initState, action) {
@@ -26,15 +23,6 @@ function infoEdit(state = initState, action) {
             info = {...info};
             info.details = info.details.filter(item => item.id !== action.deleteItem.id);
             return {...state, currentInfo: info};
-
-        case InfoEditActions.SAVE_INFO_TO_LOCAL_BEIGN:
-            return {...state, saveInfoToLocalStatus: StatusCode.saveInfoToLocalBegin};
-        case InfoEditActions.SAVE_INFO_TO_LOCAL_SUCCESS:
-            return {...state, saveInfoToLocalStatus: StatusCode.saveInfoToLocalSuccess};
-        case InfoEditActions.SAVE_INFO_TO_LOCAL_FAILED:
-            return {...state, saveInfoToLocalStatus: StatusCode.saveInfoToLocalFailed};
-        case InfoEditActions.RESET_SAVE_INFO_TO_LOCAL_STATUS:
-            return {...state, saveInfoToLocalStatus: null};
 
         default:
             return state;

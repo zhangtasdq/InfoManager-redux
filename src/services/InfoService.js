@@ -100,7 +100,7 @@ class InfoService extends BaseService {
         });
     }
 
-    deleteInfo(infos, password, deleteId, callback) {
+    deleteInfo(infos, deleteId,) {
         let newInfos = {},
             infoStr = null;
 
@@ -109,13 +109,7 @@ class InfoService extends BaseService {
                 newInfos[key] = infos[key];
             }
         }
-        this.saveInfoToLocal(newInfos, password, (saveError) => {
-            if (saveError) {
-                callback(saveError);
-            } else {
-                callback(null, newInfos);
-            }
-        });
+        return newInfos;
     }
 
     getInfoCategories(infos) {
