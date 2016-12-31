@@ -56,6 +56,25 @@ const style = StyleSheet.create({
         flex: 2
     },
 
+    categoryContainer: {
+        flex: 1
+    },
+
+    categoryHeader: {
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+
+    categoryTitle: {
+        fontSize: 20,
+        color: "#888"
+    },
+
+    categoryList: {
+        flex: 2
+    },
+
     footer: {
         height: 50
     }
@@ -170,8 +189,12 @@ class InfoListView extends ListBaseView {
         let listData = this.createListDataSource(this.props.categories);
 
         return (
-            <View>
+            <View style={style.categoryContainer}>
+                <View style={style.categoryHeader}>
+                    <Text style={style.categoryTitle}>{this.locale.category}</Text>
+                </View>
                 <ListView
+                    style={style.categoryList}
                     dataSource={listData}
                     enableEmptySections={true}
                     renderRow={this.renderCategoryItem.bind(this)}

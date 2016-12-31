@@ -25,6 +25,8 @@ const style = StyleSheet.create({
     },
 
     header: {
+        justifyContent: "center",
+        flexDirection: "column",
         height: 50,
         paddingLeft: 12,
         backgroundColor: ColorConfig.headerBg

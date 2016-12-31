@@ -62,8 +62,11 @@ const style = StyleSheet.create({
     },
 
     detailTitle: {
-        padding: 8,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 12,
         borderRadius: 4,
+        marginBottom: 16,
         color: "#fff",
         backgroundColor: ColorConfig.detailListHeaderBg
     },

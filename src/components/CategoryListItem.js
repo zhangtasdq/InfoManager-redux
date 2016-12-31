@@ -4,10 +4,9 @@ import {View, Text, StyleSheet, TouchableHighlight} from "react-native";
 import ColorConfig from "../configs/ColorConfig";
 
 const baseContainerStyle = {
-    paddingTop: 6,
-    paddingBottom: 6,
-    paddingLeft: 12,
-    height: 36
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 16
 };
 
 const baseCategoryStyle = {

@@ -51,8 +51,8 @@ const style = StyleSheet.create({
     },
 
     detailHeader: {
-        paddingTop: 12,
-        paddingBottom: 12,
+        paddingTop: 10,
+        paddingBottom: 10,
         paddingLeft: 12,
         borderRadius: 4,
         marginBottom: 16,
