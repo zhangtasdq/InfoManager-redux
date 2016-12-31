@@ -14,6 +14,7 @@ import {
     resetSaveInfoToLocalStatus
 } from "../actions/InfoActions";
 import {setCurrentItem} from "../actions/InfoShowViewActions";
+import RouteService from "../services/RouteService";
 
 
 const style = StyleSheet.create({
@@ -108,10 +109,11 @@ class InfoShowView extends ListBaseView {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish) {
-            this.props.dispatch(resetDeleteInfoStatus());
             this.props.dispatch(saveInfoToLocal(this.props.allInfos, this.props.userPassword));
         }
-        if (nextProps.saveInfoToLocalStatus === StatusCode.saveInfoToLocalSuccess) {
+        if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish &&
+            nextProps.saveInfoToLocalStatus === StatusCode.saveInfoToLocalSuccess) {
+            this.props.dispatch(resetDeleteInfoStatus());
             this.handleAfterDeleteInfo();
         }
     }
@@ -123,7 +125,10 @@ class InfoShowView extends ListBaseView {
     }
 
     editInfo = () => {
-
+        let view = RouteService.getViewByDirection(this.viewName,
+                                                   "edit",
+                                                   {action: "edit", item: this.props.currentInfoItem});
+        this.props.navigator.push(view);
     }
 
     renderDetailItem = (item) => {

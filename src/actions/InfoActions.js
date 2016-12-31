@@ -28,6 +28,17 @@ function resetDeleteInfoStatus() {
     return {type: RESET_DELETE_INFO_STATUS};
 }
 
+const UPDATE_INFO_ITEM = "Update Info Item";
+const RESET_UPDATE_INFO_STATUS = "Reset Update Info Status";
+
+function updateInfoItem(updateItem) {
+    return {type: UPDATE_INFO_ITEM, updateItem};
+}
+
+function resetUpdateInfoStatus() {
+    return {type: RESET_UPDATE_INFO_STATUS};
+}
+
 const SAVE_INFO_TO_LOCAL_BEIGN = "Save Info To Local Begin";
 const SAVE_INFO_TO_LOCAL_SUCCESS = "Save Info To Local Success";
 const SAVE_INFO_TO_LOCAL_FAILED = "Save Info To Local Failed";
@@ -75,6 +86,11 @@ export {
     RESET_DELETE_INFO_STATUS,
     deleteInfoItem,
     resetDeleteInfoStatus,
+
+    UPDATE_INFO_ITEM,
+    RESET_UPDATE_INFO_STATUS,
+    updateInfoItem,
+    resetUpdateInfoStatus,
 
     SAVE_INFO_TO_LOCAL_BEIGN,
     SAVE_INFO_TO_LOCAL_SUCCESS,

@@ -25,6 +25,10 @@ let RouteChain = {
 
     infoEditView: {
         addDetail: "infoDetailEditView"
+    },
+
+    infoShowView: {
+        edit: "infoEditView"
     }
 }
 

@@ -3,9 +3,11 @@ import StatusCode from "../configs/StatusCode";
 
 const initState = {
     infos: {},
+
     createNewInfoStatus: null,
     deleteInfoStatus: null,
-    saveInfoToLocalStatus: null
+    saveInfoToLocalStatus: null,
+    updateInfoStatus: null
 }
 
 function info(state = initState, action) {
@@ -28,6 +30,18 @@ function info(state = initState, action) {
             return {...state, infos: newInfos, deleteInfoStatus: StatusCode.deleteInfoFinish};
         case InfoActions.RESET_DELETE_INFO_STATUS:
             return {...state, deleteInfoStatus: null};
+
+        case InfoActions.UPDATE_INFO_ITEM:
+            return {
+                ...state,
+                infos: {
+                    ...state.infos,
+                    [action.updateItem.id] : action.updateItem
+                },
+                updateInfoStatus: StatusCode.updateInfoFinish
+            };
+        case InfoActions.RESET_UPDATE_INFO_STATUS:
+            return {...state, updateInfoStatus: null};
 
         case InfoActions.SAVE_INFO_TO_LOCAL_BEIGN:
             return {...state, saveInfoToLocalStatus: StatusCode.saveInfoToLocalBegin};

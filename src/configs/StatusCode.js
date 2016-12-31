@@ -31,7 +31,8 @@ const StatusCodeConfig = {
     restoreInfoSuccess: 23,
     restoreInfoFailed: 24,
 
-    deleteInfoFinish: 25
+    deleteInfoFinish: 25,
+    updateInfoFinish: 26
 };
 
 export default StatusCodeConfig;

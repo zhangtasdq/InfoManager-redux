@@ -10,9 +10,16 @@ import {FormControl, Notice, InfoDetailItem} from "../components";
 import RouteService from "../services/RouteService";
 import InfoService from "../services/InfoService";
 import tools from "../tools";
-import {saveInfoToLocal, resetSaveInfoToLocalStatus} from "../actions/InfoActions";
+import {
+    saveInfoToLocal,
+    resetSaveInfoToLocalStatus,
+    createNewInfo,
+    resetCreateInfoStatus,
+    updateInfoItem,
+    resetUpdateInfoStatus
+} from "../actions/InfoActions";
 import {setCurrentInfo, addDetailItem} from "../actions/InfoEditViewActions";
-import {createNewInfo, resetCreateInfoStatus} from "../actions/InfoActions";
+
 
 const style = StyleSheet.create({
     container: {
@@ -88,16 +95,30 @@ class InfoEditView extends ListBaseView {
         if (this.props.param.action === "add") {
             this.props.dispatch(setCurrentInfo(InfoService.buildEmptyInfo()));
         }
+        if (this.props.param.action === "edit") {
+            this.props.dispatch(setCurrentInfo(this.props.param.item));
+        }
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.createNewInfoStatus === StatusCode.createNewInfoFinish) {
-            this.props.dispatch(resetCreateInfoStatus());
+            this.props.dispatch(saveInfoToLocal(nextProps.infos, nextProps.userPassword));
+        }
+
+        if (nextProps.updateInfoStatus === StatusCode.updateInfoFinish) {
             this.props.dispatch(saveInfoToLocal(nextProps.infos, nextProps.userPassword));
         }
 
         if (nextProps.saveInfoToLocalStatus === StatusCode.saveInfoToLocalSuccess) {
-            this.afterEditInfo();
+            if (nextProps.createNewInfoStatus === StatusCode.createNewInfoFinish) {
+                this.props.dispatch(resetCreateInfoStatus());
+                this.afterEditInfo();
+
+            }
+            if (nextProps.updateInfoStatus === StatusCode.updateInfoFinish) {
+                this.props.dispatch(resetUpdateInfoStatus());
+                this.afterEditInfo();
+            }
         }
     }
 
@@ -119,7 +140,8 @@ class InfoEditView extends ListBaseView {
     saveInfo() {
         let title = this.refs.title.getValue(),
             category = this.refs.category.getValue(),
-            currentInfo = this.props.currentInfo;
+            currentInfo = this.props.currentInfo,
+            action = this.props.param.action;
 
         if (tools.isEmpty(title)) {
             Notice.show(this.locale.notice.titleCantBeEmpty);
@@ -132,7 +154,12 @@ class InfoEditView extends ListBaseView {
         }
         currentInfo.title = title;
         currentInfo.category = category;
-        this.props.dispatch(createNewInfo(currentInfo));
+
+        if (action === "add") {
+            this.props.dispatch(createNewInfo(currentInfo));
+        } else if (action === "edit") {
+            this.props.dispatch(updateInfoItem(currentInfo));
+        }
     }
 
     addInfoDetailItem() {
@@ -153,6 +180,7 @@ class InfoEditView extends ListBaseView {
 
     render() {
         let details = this.createListDataSource(this.props.currentInfo.details),
+            currentInfo = this.props.currentInfo,
             title = this.getTitle();
 
         return (
@@ -168,8 +196,8 @@ class InfoEditView extends ListBaseView {
                 </View>
 
                 <View style={style.body}>
-                    <FormControl ref="title" label={this.locale.title} />
-                    <FormControl ref="category" label={this.locale.category} />
+                    <FormControl value={currentInfo.title} ref="title" label={this.locale.title} />
+                    <FormControl value={currentInfo.category} ref="category" label={this.locale.category} />
 
                     <View style={style.detailContainer} >
                         <View style={style.detailHeader} >
@@ -204,6 +232,7 @@ function select(state) {
         infos: state.info.infos,
         saveInfoToLocalStatus: state.info.saveInfoToLocalStatus,
         createNewInfoStatus: state.info.createNewInfoStatus,
+        updateInfoStatus: state.info.updateInfoStatus,
         currentInfo: state.infoEditView.currentInfo,
     }
 }
