@@ -1,12 +1,23 @@
 import React, {Component} from "react";
 import {View, Text, StyleSheet} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import {connect} from "react-redux";
 
 import BaseView from "./BaseView";
 import ColorConfig from "../configs/ColorConfig";
 import {FormControl, Notice} from "../components";
 import tools from "../tools";
+import {addDetailItem, updateDetailItem, deleteDetailItem} from "../actions/InfoEditViewActions";
+import {setCurrentItem, resetCurrentItem} from "../actions/InfoDetailEditActions";
+import InfoService from "../services/InfoService";
 
+
+const baseFooterStyle = {
+    height: 40,
+    paddingRight: 12,
+    paddingLeft: 12,
+    marginBottom: 12,
+}
 
 const style = StyleSheet.create({
     container: {
@@ -30,11 +41,15 @@ const style = StyleSheet.create({
         marginLeft: 12
     },
 
-    footer: {
-        height: 40,
-        paddingRight: 12,
-        marginBottom: 12,
+    footerRight: {
+        ...baseFooterStyle,
         alignItems: "flex-end"
+    },
+
+    footerBetween: {
+        ...baseFooterStyle,
+        flexDirection: "row",
+        justifyContent: "space-between"
     },
 
     footerBtnText: {
@@ -46,9 +61,10 @@ const style = StyleSheet.create({
 class InfoDetailEditView extends BaseView {
     viewName = "infoDetailEditView";
 
-    saveDetailInfo() {
+    saveDetailInfo = () => {
         let name = this.refs.propertyName.getValue(),
-            value = this.refs.propertyContent.getValue();
+            value = this.refs.propertyContent.getValue(),
+            currentItem = this.props.currentItem;
 
         if (tools.isEmpty(name)) {
             Notice.show(this.locale.notice.propertyNameCantBeEmpty);
@@ -59,9 +75,29 @@ class InfoDetailEditView extends BaseView {
             Notice.show(this.locale.propertyContentCantBeEmpty);
             return;
         }
+        currentItem.name = name;
+        currentItem.value = value;
+        if (this.props.param.action === "add") {
+            this.props.dispatch(addDetailItem(currentItem));
+        } else {
+            this.props.dispatch(updateDetailItem(currentItem));
+        }
+        this.props.dispatch(resetCurrentItem());
+        this.goBack();
+    };
 
-        this.props.param.callback("add", {name: name, value: value});
-        this.props.navigator.pop();
+    deleteDetailItem = () => {
+        this.props.dispatch(deleteDetailItem(this.props.currentItem));
+        this.props.dispatch(resetCurrentItem());
+        this.goBack();
+    };
+
+    componentDidMount() {
+        if (this.props.param.action === "add") {
+            this.props.dispatch(setCurrentItem(InfoService.buildEmptyDetailItem()));
+        } else if (this.props.param.action === "edit") {
+            this.props.dispatch(setCurrentItem(this.props.param.item));
+        }
     }
 
     getTitle() {
@@ -71,8 +107,37 @@ class InfoDetailEditView extends BaseView {
         return this.locale.editInfoDetailTitle;
     }
 
+    getFooterActionsView() {
+        let action = this.props.param.action,
+            deleteActionView = null,
+            saveActionView = null,
+            footerStyle = action === "add" ? style.footerRight : style.footerBetween;
+
+        saveActionView = (
+            <Icon.Button name="pencil" backgroundColor={ColorConfig.primaryButtonBg} onPress={this.saveDetailInfo}>
+                <Text style={style.footerBtnText}>{this.locale.save}</Text>
+            </Icon.Button>
+        );
+
+        if (action === "edit") {
+            deleteActionView = (
+                <Icon.Button name="trash" backgroundColor={ColorConfig.dangerButtonBg} onPress={this.deleteDetailItem}>
+                    <Text style={style.footerBtnText}>{this.locale.delteItem}</Text>
+                </Icon.Button>
+            );
+        }
+
+        return (
+            <View style={footerStyle}>
+                {deleteActionView}
+                {saveActionView}
+            </View>
+        );
+    }
+
     render() {
-        let title = this.getTitle();
+        let title = this.getTitle(),
+            currentItem = this.props.currentItem;
 
         return (
             <View style={style.container}>
@@ -81,19 +146,20 @@ class InfoDetailEditView extends BaseView {
                 </View>
 
                 <View style={style.body}>
-                    <FormControl ref="propertyName" label={this.locale.propertyNameLabel} placeholder={this.locale.propertyNamePlaceholder} />
-                    <FormControl ref="propertyContent" label={this.locale.propertyValueLabel} placeholder={this.locale.propertyValuePlaceholder} />
+                    <FormControl value={currentItem.name} ref="propertyName" label={this.locale.propertyNameLabel} placeholder={this.locale.propertyNamePlaceholder} />
+                    <FormControl value={currentItem.value} ref="propertyContent" label={this.locale.propertyValueLabel} placeholder={this.locale.propertyValuePlaceholder} />
                 </View>
 
-                <View style={style.footer}>
-                    <Icon.Button name="save" backgroundColor={ColorConfig.primaryButtonBg} onPress={this.saveDetailInfo.bind(this)}>
-                        <Text style={style.footerBtnText}>{this.locale.save}</Text>
-                    </Icon.Button>
-                </View>
-
+                {this.getFooterActionsView()}
             </View>
         );
     }
 }
 
-export default InfoDetailEditView;
+function select(state) {
+    return {
+        currentItem: state.infoDetailEditView.currentItem
+    };
+}
+
+export default connect(select)(InfoDetailEditView);

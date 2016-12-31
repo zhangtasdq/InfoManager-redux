@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {View, TextInput, StyleSheet} from "react-native";
+import Notice from "./Notice";
 
 
 import ColorConfig from "../configs/ColorConfig";
@@ -35,6 +36,7 @@ class Input extends Component {
         if (this.props.onBlur) {
             this.props.onBlur(this.state.value);
         }
+        this.setState({focus: false});
     };
 
     handleOnFocus = () => {
@@ -44,6 +46,12 @@ class Input extends Component {
 
     handleOnChange = (event) => {
         this.setState({value: event.nativeEvent.text});
+    }
+
+    componentWillReceiveProps(props) {
+        if (props.value) {
+            this.setState({value: props.value});
+        }
     }
 
     getCurrentValue() {

@@ -5,6 +5,7 @@ import InfoReducers from "./InfoReducers";
 import LoginViewReducers from "./LoginViewReducers";
 import InfoListViewReducers from "./InfoListViewReducers";
 import InfoEditViewReducers from "./InfoEditViewReducers";
+import InfoDetailEditReducers from "./InfoDetailEditReducers";
 
 import * as RootActions from "../actions/RootActions";
 
@@ -13,7 +14,8 @@ const appReducers = combineReducers({
     info: InfoReducers,
     loginView: LoginViewReducers,
     infoListView: InfoListViewReducers,
-    infoEditView: InfoEditViewReducers
+    infoEditView: InfoEditViewReducers,
+    infoDetailEditView: InfoDetailEditReducers
 });
 const rootReducers = (state, action) => {
     if (action.type === RootActions.RESET_APP) {

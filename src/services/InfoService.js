@@ -47,11 +47,8 @@ class InfoService extends BaseService {
         return {id: (new Date()).getTime(), title: "", category: "", details: []};
     }
 
-    buildNewDetailItem(data) {
-        return {
-            ...data,
-            id: (new Date()).getTime()
-        }
+    buildEmptyDetailItem() {
+        return {id: (new Date()).getTime(), name: "", value: ""};
     }
 
     backupInfo(callback) {

@@ -1,6 +1,8 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet} from "react-native";
+import {View, Text, StyleSheet, TouchableHighlight} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+
+import ColorConfig from "../configs/ColorConfig";
 
 const style = StyleSheet.create({
     container: {
@@ -22,12 +24,22 @@ const style = StyleSheet.create({
 });
 
 class InfoDetailItem extends Component {
+    clickItem = () => {
+        if (this.props.onClick) {
+            this.props.onClick(this.props.item);
+        }
+    };
+
     render() {
+        let touchColor = ColorConfig.listItemTouchColor;
+
         return (
-            <View style={style.container}>
-                <Text style={style.name}>{this.props.item.name}</Text>
-                <Icon style={style.icon} name="angle-right" size={24} />
-            </View>
+            <TouchableHighlight  onPress={this.clickItem} underlayColor={touchColor} >
+                <View style={style.container}>
+                    <Text style={style.name}>{this.props.item.name}</Text>
+                    <Icon style={style.icon} name="angle-right" size={24} />
+                </View>
+            </TouchableHighlight>
         );
     }
 }

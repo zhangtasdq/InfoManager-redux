@@ -29,7 +29,7 @@ class FormControl extends Component {
                 <View style={style.label}>
                     <Text style={style.labelText} >{this.props.label}</Text>
                 </View>
-                <Input ref="input" placeholder={this.props.placeholder} />
+                <Input value={this.props.value} ref="input" placeholder={this.props.placeholder} />
             </View>
         );
     }

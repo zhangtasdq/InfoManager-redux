@@ -48,10 +48,11 @@ const style = StyleSheet.create({
     },
 
     detailHeader: {
-        paddingTop: 8,
-        paddingBottom: 8,
-        paddingLeft: 8,
+        paddingTop: 12,
+        paddingBottom: 12,
+        paddingLeft: 12,
         borderRadius: 4,
+        marginBottom: 16,
         backgroundColor: ColorConfig.detailListHeaderBg
     },
 
@@ -82,12 +83,9 @@ class InfoEditView extends ListBaseView {
         show: "always"
     }];
 
-    handleEditDetailResult = (action, data) => {
-        if (action === "add") {
-            let newItem = InfoService.buildNewDetailItem(data);
-            this.props.dispatch(addDetailItem(newItem));
-        }
-
+    editInfoDetailItem = (item) => {
+        let view = RouteService.getViewByDirection(this.viewName, "addDetail", {action: "edit", item: item});
+        this.props.navigator.push(view);
     };
 
     componentDidMount() {
@@ -142,12 +140,12 @@ class InfoEditView extends ListBaseView {
     }
 
     addInfoDetailItem() {
-        let view = RouteService.getViewByDirection(this.viewName, "addDetail", {action: "add", callback: this.handleEditDetailResult});
+        let view = RouteService.getViewByDirection(this.viewName, "addDetail", {action: "add"});
         this.props.navigator.push(view);
     }
 
     renderDetailItem(item) {
-        return <InfoDetailItem key={item.id} item={item}  />
+        return <InfoDetailItem key={item.id} item={item} onClick={this.editInfoDetailItem}  />
     }
 
     getTitle() {
@@ -186,7 +184,7 @@ class InfoEditView extends ListBaseView {
                             <ListView
                                 dataSource={details}
                                 enableEmptySections={true}
-                                renderRow={this.renderDetailItem}
+                                renderRow={this.renderDetailItem.bind(this)}
                                 renderSeparator={this.renderListSplit}
                             />
                         </View>
