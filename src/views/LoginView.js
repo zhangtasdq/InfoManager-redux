@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {View, Text, StyleSheet} from "react-native";
 import {connect} from "react-redux";
 
-import {Input, Button, Loading, Notice} from "../components";
+import {Input, Button, Notice} from "../components";
 import {userLogin, resetUserLoginStatus} from "../actions/LoginViewActions";
 import {setUserPassword} from "../actions/UserActions";
 import ColorConfig from "../configs/ColorConfig";
@@ -84,7 +84,6 @@ class LoginView extends BaseView {
     }
 
     render() {
-        let showLoading = this.props.loginStatus === StatusCode.userBeginLogin;
         return (
             <View style={style.loginView}>
                 <View style={style.container}>

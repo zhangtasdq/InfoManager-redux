@@ -80,7 +80,7 @@ class InfoEditView extends ListBaseView {
     }];
 
     editInfoDetailItem = (item) => {
-        this.goView("addDetail", {action: "edit", item: item});
+        this.goView("addDetail", {action: "edit", item: {...item}});
     };
 
     handleClickToolbar = (position) => {

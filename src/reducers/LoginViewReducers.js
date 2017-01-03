@@ -16,7 +16,7 @@ function user(state = initState, action) {
         case LoginActions.USER_LOGIN_FAILED:
             return {...state, loginStatus: StatusCode.userLoginFailed};
         case LoginActions.RESET_USER_LOGIN_STATUS:
-            return {...state, loginStatus: null};
+            return {...state, loginStatus: null, password: null};
         default:
             return state;
     }

@@ -1,5 +1,4 @@
 import UserService from "../services/UserService";
-import Notice from "../components/Notice";
 
 const USER_BEGIN_LOGIN = "User Begin Login";
 const USER_LOGIN_SUCCESS = "User Login Success";

@@ -117,25 +117,21 @@ class InfoShowView extends ListBaseView {
         }
         if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish &&
             nextProps.saveInfoToLocalStatus === StatusCode.saveInfoToLocalSuccess) {
-            this.props.dispatch(resetDeleteInfoStatus());
             this.handleAfterDeleteInfo();
         }
     }
 
     handleAfterDeleteInfo() {
+        this.props.dispatch(resetDeleteInfoStatus());
         this.props.dispatch(resetSaveInfoToLocalStatus());
         Notice.show(this.locale.notice.deleteSuccess);
         setTimeout(() => this.goBack(), 1000);
     }
 
     render() {
-        let detailList = this.createListDataSource(null),
-            infoItem = this.props.currentInfoItem ? this.props.currentInfoItem : {},
+        let infoItem = this.props.currentInfoItem,
+            detailList = this.createListDataSource(infoItem.details),
             isShowLoading = this.props.deleteInfoStatus === StatusCode.deleteInfoItemBegin;
-
-        if (infoItem.details && infoItem.details.length > 0) {
-            detailList = this.createListDataSource(infoItem.details);
-        }
 
         return (
             <View style={style.container}>
@@ -210,7 +206,7 @@ class InfoShowView extends ListBaseView {
 };
 
 function select(state) {
-    let currentInfoItem = state.info.infos[state.infoShowView.currentItemId];
+    let currentInfoItem = {...state.info.infos[state.infoShowView.currentItemId]};
 
     return {
         allInfos: state.info.infos,

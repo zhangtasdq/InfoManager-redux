@@ -1,7 +1,7 @@
 import * as InfoShowActions from "../actions/InfoShowViewActions";
 
 const initState = {
-    currentItemId: null
+    currentItemId: {}
 };
 
 function infoShow(state = initState, action) {
