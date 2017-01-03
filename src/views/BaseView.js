@@ -4,6 +4,7 @@ import {ListView, Platform, BackAndroid, DeviceEventEmitter} from "react-native"
 import {resetApp} from "../actions/RootActions";
 import I18n from "../i18n";
 import AppConfig from "../configs/AppConfig";
+import RouteService from "../services/RouteService";
 
 
 class BaseView extends Component {
@@ -45,7 +46,7 @@ class BaseView extends Component {
     }
 
     goView(direction, param) {
-        let view = RouteService.getView(this.viewName, direction, param);
+        let view = RouteService.getViewByDirection(this.viewName, direction, param);
         this.props.navigator.push(view);
     }
 }

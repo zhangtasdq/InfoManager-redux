@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 
 import BaseView from "./BaseView";
 import ColorConfig from "../configs/ColorConfig";
-import {FormControl, Notice} from "../components";
+import {FormControl, Notice, Header} from "../components";
 import tools from "../tools";
 import {addDetailItem, updateDetailItem, deleteDetailItem} from "../actions/InfoEditViewActions";
 import {setCurrentItem, resetCurrentItem} from "../actions/InfoDetailEditActions";
@@ -22,14 +22,6 @@ const baseFooterStyle = {
 const style = StyleSheet.create({
     container: {
         flex: 1
-    },
-
-    header: {
-        justifyContent: "center",
-        flexDirection: "column",
-        height: 50,
-        paddingLeft: 12,
-        backgroundColor: ColorConfig.headerBg
     },
 
     headerText: {
@@ -143,13 +135,13 @@ class InfoDetailEditView extends BaseView {
 
         return (
             <View style={style.container}>
-                <View style={style.header}>
+                <Header needPadding={true}>
                     <Text style={style.headerText}>{title}</Text>
-                </View>
+                </Header>
 
                 <View style={style.body}>
-                    <FormControl value={currentItem.name} ref="propertyName" label={this.locale.propertyNameLabel} placeholder={this.locale.propertyNamePlaceholder} />
-                    <FormControl value={currentItem.value} ref="propertyContent" label={this.locale.propertyValueLabel} placeholder={this.locale.propertyValuePlaceholder} />
+                    <FormControl value={currentItem.name} ref="propertyName" label={this.locale.propertyNameLabel} placeholder={this.locale.placeholder.inputPropertyName} />
+                    <FormControl value={currentItem.value} ref="propertyContent" label={this.locale.propertyValueLabel} placeholder={this.locale.placeholder.inputPropertyValue} />
                 </View>
 
                 {this.getFooterActionsView()}

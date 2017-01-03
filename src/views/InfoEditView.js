@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import ListBaseView from "./ListBaseView";
 import ColorConfig from "../configs/ColorConfig";
 import StatusCode from "../configs/StatusCode";
-import {FormControl, Notice, InfoDetailItem} from "../components";
+import {FormControl, Notice, InfoDetailItem, Header} from "../components";
 import InfoService from "../services/InfoService";
 import tools from "../tools";
 import {
@@ -25,14 +25,8 @@ const style = StyleSheet.create({
         flex: 1
     },
 
-    header: {
-        height: 50,
-        alignItems: "stretch"
-    },
-
     headerToolbar: {
-        height: 50,
-        backgroundColor: ColorConfig.headerBg
+        height: 50
     },
 
     headerText: {
@@ -182,7 +176,7 @@ class InfoEditView extends ListBaseView {
 
         return (
             <View style={style.container} >
-                <View style={style.header}>
+                <Header>
                     <Icon.ToolbarAndroid
                         style={style.headerToolbar}
                         titleColor="#fff"
@@ -190,7 +184,7 @@ class InfoEditView extends ListBaseView {
                         onActionSelected={this.handleClickToolbar}
                         title={title}
                     />
-                </View>
+                </Header>
 
                 <View style={style.body}>
                     <FormControl value={currentInfo.title} ref="title" label={this.locale.title} />

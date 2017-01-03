@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import ListBaseView from "./ListBaseView";
 import ColorConfig from "../configs/ColorConfig";
 import StatusCode from "../configs/StatusCode";
-import {Notice, ConfirmDialog, InfoDetailExpandItem, Loading} from "../components";
+import {Notice, ConfirmDialog, InfoDetailExpandItem, Loading, Header} from "../components";
 import {
     deleteInfoItem,
     resetDeleteInfoStatus,
@@ -21,14 +21,8 @@ const style = StyleSheet.create({
         flex: 1
     },
 
-    header: {
-        height: 50,
-        alignItems: "stretch"
-    },
-
     headerToolbar: {
-        height: 50,
-        backgroundColor: ColorConfig.headerBg
+        height: 50
     },
 
     headerText: {
@@ -145,7 +139,7 @@ class InfoShowView extends ListBaseView {
 
         return (
             <View style={style.container}>
-                <View style={style.header}>
+                <Header>
                     <Icon.ToolbarAndroid
                         style={style.headerToolbar}
                         titleColor="#fff"
@@ -153,7 +147,7 @@ class InfoShowView extends ListBaseView {
                         onIconClicked={this.goBack}
                         title={this.locale.showInfoTitle}
                     />
-                </View>
+                </Header>
 
                 <View style={style.body}>
                     <View style={style.formGroup}>

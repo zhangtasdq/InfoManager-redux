@@ -31,7 +31,8 @@ import {
     ConfirmDialog,
     Tab,
     Notice,
-    Loading
+    Loading,
+    Header
 } from "../components";
 
 
@@ -41,14 +42,8 @@ const style = StyleSheet.create({
         flexDirection: "column"
     },
 
-    header: {
-        height: 50,
-        alignItems: "stretch"
-    },
-
     headerToolbar: {
-        height: 50,
-        backgroundColor: ColorConfig.headerBg
+        height: 50
     },
 
     body: {
@@ -196,8 +191,6 @@ class InfoListView extends ListBaseView {
                this.props.restoreInfoStatus === StatusCode.restoreInfoBegin;
     }
 
-
-
     isActiveCategory(currentCategory) {
         return this.props.activeCategory === currentCategory;
     }
@@ -214,7 +207,7 @@ class InfoListView extends ListBaseView {
                 renderNavigationView={this.renderCategoryView}
             >
                 <View style={style.container}>
-                    <View style={style.header} >
+                    <Header>
                         <Icon.ToolbarAndroid
                             style={style.headerToolbar}
                             titleColor="#fff"
@@ -222,7 +215,7 @@ class InfoListView extends ListBaseView {
                             onIconClicked={this.onClickOpenDrawer}
                             title={this.locale.infoListTitle}
                         />
-                    </View>
+                    </Header>
 
                     <View style={style.body}>
                         <ListView

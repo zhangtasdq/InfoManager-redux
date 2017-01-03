@@ -18,14 +18,14 @@ let language = {
     edit: "Edit",
     propertyNameLabel: "Name",
     propertyValueLabel: "Content",
-    propertyNamePlaceholder: "Please input name (eg: email)",
-    propertyValuePlaceholder: "Please input content (eg: 123@gmail.com)",
     confirmBackupToOnedrive: "Back up to OneDrive? If the backup will overwrite previously saved files!",
     confirmRestoreFromOnedrive: "If you restore from OneDrive? If the restore will overwrite the current information!",
     confirmDeleteInfo: "Delete this info？",
 
     placeholder: {
-        inputPassword: "Plese input password"
+        inputPassword: "Plese input password",
+        inputPropertyName: "Please input name (eg: email)",
+        inputPropertyValue: "Please input content (eg: 123@gmail.com)",
     },
 
     notice: {

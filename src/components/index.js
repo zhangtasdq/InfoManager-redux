@@ -9,6 +9,7 @@ import CategoryListItem from "./CategoryListItem";
 import FormControl from "./FormControl";
 import InfoDetailItem from "./InfoDetailItem";
 import InfoDetailExpandItem from "./InfoDetailExpandItem";
+import Header from "./Header";
 
 export {
     Button,
@@ -21,5 +22,6 @@ export {
     CategoryListItem,
     FormControl,
     InfoDetailItem,
-    InfoDetailExpandItem
+    InfoDetailExpandItem,
+    Header
 };
