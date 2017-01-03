@@ -6,6 +6,7 @@ import BaseService from "./BaseService";
 
 let {FileTool, EncryptTool, OneDriveTool} = NativeModules;
 
+
 class InfoService extends BaseService {
     loadLocalInfo(password, callback) {
         this.getFileContent(AppConfig.infoFileName, (fileError, responseCode, data) => {

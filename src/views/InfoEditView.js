@@ -7,7 +7,6 @@ import ListBaseView from "./ListBaseView";
 import ColorConfig from "../configs/ColorConfig";
 import StatusCode from "../configs/StatusCode";
 import {FormControl, Notice, InfoDetailItem} from "../components";
-import RouteService from "../services/RouteService";
 import InfoService from "../services/InfoService";
 import tools from "../tools";
 import {
@@ -87,9 +86,22 @@ class InfoEditView extends ListBaseView {
     }];
 
     editInfoDetailItem = (item) => {
-        let view = RouteService.getViewByDirection(this.viewName, "addDetail", {action: "edit", item: item});
-        this.props.navigator.push(view);
+        this.goView("addDetail", {action: "edit", item: item});
     };
+
+    handleClickToolbar = (position) => {
+        if (position === 0) {
+            this.saveInfo();
+        }
+    }
+
+    renderDetailItem = (item) => {
+        return <InfoDetailItem key={item.id} item={item} onClick={this.editInfoDetailItem}  />
+    }
+
+    addInfoDetailItem = () => {
+        this.goView("addDetail", {action: "add"});
+    }
 
     componentDidMount() {
         if (this.props.param.action === "add") {
@@ -131,12 +143,6 @@ class InfoEditView extends ListBaseView {
         }, 1200);
     }
 
-    handleClickToolbar(position) {
-        if (position === 0) {
-            this.saveInfo();
-        }
-    }
-
     saveInfo() {
         let title = this.refs.title.getValue(),
             category = this.refs.category.getValue(),
@@ -162,15 +168,6 @@ class InfoEditView extends ListBaseView {
         }
     }
 
-    addInfoDetailItem() {
-        let view = RouteService.getViewByDirection(this.viewName, "addDetail", {action: "add"});
-        this.props.navigator.push(view);
-    }
-
-    renderDetailItem(item) {
-        return <InfoDetailItem key={item.id} item={item} onClick={this.editInfoDetailItem}  />
-    }
-
     getTitle() {
         if (this.props.param.action === "add") {
             return this.locale.addInfoTitle;
@@ -190,7 +187,7 @@ class InfoEditView extends ListBaseView {
                         style={style.headerToolbar}
                         titleColor="#fff"
                         actions={this.toolbarActions}
-                        onActionSelected={this.handleClickToolbar.bind(this)}
+                        onActionSelected={this.handleClickToolbar}
                         title={title}
                     />
                 </View>
@@ -208,7 +205,7 @@ class InfoEditView extends ListBaseView {
                             <ListView
                                 dataSource={details}
                                 enableEmptySections={true}
-                                renderRow={this.renderDetailItem.bind(this)}
+                                renderRow={this.renderDetailItem}
                                 renderSeparator={this.renderListSplit}
                             />
                         </View>
@@ -217,7 +214,7 @@ class InfoEditView extends ListBaseView {
                 </View>
 
                 <View style={style.footer}>
-                    <Icon.Button name="plus" backgroundColor={ColorConfig.primaryButtonBg} onPress={this.addInfoDetailItem.bind(this)}>
+                    <Icon.Button name="plus" backgroundColor={ColorConfig.primaryButtonBg} onPress={this.addInfoDetailItem}>
                         <Text style={style.addDetailBtnText}>{this.locale.add}</Text>
                     </Icon.Button>
                 </View>

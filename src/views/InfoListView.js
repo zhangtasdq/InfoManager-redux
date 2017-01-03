@@ -14,7 +14,6 @@ import {connect} from "react-redux";
 import ListBaseView from "./ListBaseView";
 import ColorConfig from "../configs/ColorConfig";
 import StatusCode from "../configs/StatusCode";
-import RouteService from "../services/RouteService";
 import InfoService from "../services/InfoService";
 import {setInfos} from "../actions/InfoActions";
 import {
@@ -83,23 +82,34 @@ const style = StyleSheet.create({
 
 class InfoListView extends ListBaseView {
     viewName = "infoListView";
-    isFirstLoadingLocalInfo = true;
-
-    footerActions = [{
-        action: "cloud-download",
-        onClick: this.onClickRestore.bind(this)
-    }, {
-        action: "cloud-upload",
-        onClick: this.onClickBackup.bind(this)
-    }, {
-        action: "plus",
-        onClick: this.onClickAddInfo.bind(this)
-    }];
 
     constructor() {
         super();
         this.state = {showBackupDialog: false, showRestoreDialog: false};
     }
+
+    onClickRestore = () => {
+        this.setState({showRestoreDialog: true});
+    };
+
+    onClickBackup = () => {
+        this.setState({showBackupDialog: true});
+    };
+
+    onClickAddInfo = () => {
+        this.goView("add", {action: "add"});
+    };
+
+    footerActions = [{
+        action: "cloud-download",
+        onClick: this.onClickRestore
+    }, {
+        action: "cloud-upload",
+        onClick: this.onClickBackup
+    }, {
+        action: "plus",
+        onClick: this.onClickAddInfo
+    }];
 
     handleCancelBackup = () => {
         this.setState({showBackupDialog: false});
@@ -120,8 +130,7 @@ class InfoListView extends ListBaseView {
     }
 
     showInfoDetail = (item) => {
-        let view = RouteService.getViewByDirection(this.viewName, "detail", {showId: item.id});
-        this.props.navigator.push(view);
+        this.goView("detail", {showId: item.id});
     };
 
     onClickCategory = (category) => {
@@ -129,18 +138,42 @@ class InfoListView extends ListBaseView {
         this.refs.categoryView.closeDrawer();
     };
 
-    onClickRestore() {
-        this.setState({showRestoreDialog: true});
-    };
+    renderCategoryItem = (category) => {
+        let isActive = this.isActiveCategory(category.name);
 
-    onClickBackup(){
-        this.setState({showBackupDialog: true});
-    };
+        return (
+            <CategoryListItem key={category.id} item={category} onClick={this.onClickCategory} isActive={isActive} />
+        );
+    }
 
-    onClickAddInfo() {
-        let view = RouteService.getViewByDirection(this.viewName, "add", {action: "add"});
-        this.props.navigator.push(view);
-    };
+    renderCategoryView = () => {
+        let listData = this.createListDataSource(this.props.categories);
+
+        return (
+            <View style={style.categoryContainer}>
+                <View style={style.categoryHeader}>
+                    <Text style={style.categoryTitle}>{this.locale.category}</Text>
+                </View>
+                <ListView
+                    style={style.categoryList}
+                    dataSource={listData}
+                    enableEmptySections={true}
+                    renderRow={this.renderCategoryItem}
+                    renderSeparator={this.renderListSplit}
+                />
+            </View>
+        );
+    }
+
+    onClickOpenDrawer = () => {
+        this.refs.categoryView.openDrawer();
+    }
+
+    renderInfoItem = (item) => {
+        return (
+            <InfoListItem key={item.id} item={item} onClick={this.showInfoDetail} />
+        );
+    }
 
     componentDidMount() {
         this.props.dispatch(loadLocalInfo(this.props.userPassword));
@@ -157,51 +190,16 @@ class InfoListView extends ListBaseView {
         }
     }
 
-    onClickOpenDrawer() {
-        this.refs.categoryView.openDrawer();
-    }
-
     shouldShowLoading() {
         return this.props.loadLocalInfoStatus === StatusCode.loadLocalInfoBegin ||
                this.props.backupInfoStatus === StatusCode.backupInfoBegin ||
                this.props.restoreInfoStatus === StatusCode.restoreInfoBegin;
     }
 
-    renderInfoItem(item) {
-        return (
-            <InfoListItem key={item.id} item={item} onClick={this.showInfoDetail} />
-        );
-    }
+
 
     isActiveCategory(currentCategory) {
         return this.props.activeCategory === currentCategory;
-    }
-
-    renderCategoryItem(category) {
-        let isActive = this.isActiveCategory(category.name);
-
-        return (
-            <CategoryListItem key={category.id} item={category} onClick={this.onClickCategory} isActive={isActive} />
-        );
-    }
-
-    renderCategoryView() {
-        let listData = this.createListDataSource(this.props.categories);
-
-        return (
-            <View style={style.categoryContainer}>
-                <View style={style.categoryHeader}>
-                    <Text style={style.categoryTitle}>{this.locale.category}</Text>
-                </View>
-                <ListView
-                    style={style.categoryList}
-                    dataSource={listData}
-                    enableEmptySections={true}
-                    renderRow={this.renderCategoryItem.bind(this)}
-                    renderSeparator={this.renderListSplit}
-                />
-            </View>
-        );
     }
 
     render() {
@@ -213,7 +211,7 @@ class InfoListView extends ListBaseView {
                 ref="categoryView"
                 drawerWidth={300}
                 drawerPosition={DrawerLayoutAndroid.positions.Left}
-                renderNavigationView={this.renderCategoryView.bind(this)}
+                renderNavigationView={this.renderCategoryView}
             >
                 <View style={style.container}>
                     <View style={style.header} >
@@ -221,7 +219,7 @@ class InfoListView extends ListBaseView {
                             style={style.headerToolbar}
                             titleColor="#fff"
                             navIconName="reorder"
-                            onIconClicked={this.onClickOpenDrawer.bind(this)}
+                            onIconClicked={this.onClickOpenDrawer}
                             title={this.locale.infoListTitle}
                         />
                     </View>
@@ -230,7 +228,7 @@ class InfoListView extends ListBaseView {
                         <ListView
                             dataSource={listData}
                             enableEmptySections={true}
-                            renderRow={this.renderInfoItem.bind(this)}
+                            renderRow={this.renderInfoItem}
                             renderSeparator={this.renderListSplit}
                         />
                     </View>

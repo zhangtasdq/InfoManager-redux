@@ -17,6 +17,10 @@ class BaseView extends Component {
         return true;
     }
 
+    goBack = () => {
+        this.props.navigator.pop();
+    }
+
     handleOnAppPause = () => {
         this.props.dispatch(resetApp());
         this.props.navigator.popToTop();
@@ -33,14 +37,11 @@ class BaseView extends Component {
         if (this.isAndroid()) {
             BackAndroid.removeEventListener("hardwareBackPress", this.handleBackup);
         }
+        DeviceEventEmitter.removeListener("activityPause");
     }
 
     isAndroid() {
         return Platform.OS === "android";
-    }
-
-    goBack() {
-        this.props.navigator.pop();
     }
 
     goView(direction, param) {

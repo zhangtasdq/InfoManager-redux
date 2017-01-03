@@ -14,7 +14,6 @@ import {
     resetSaveInfoToLocalStatus
 } from "../actions/InfoActions";
 import {setCurrentItem} from "../actions/InfoShowViewActions";
-import RouteService from "../services/RouteService";
 
 
 const style = StyleSheet.create({
@@ -88,6 +87,11 @@ const style = StyleSheet.create({
 class InfoShowView extends ListBaseView {
     viewName = "infoShowView";
 
+    constructor() {
+        super();
+        this.state = {showConfirmDeleteDialog: false};
+    }
+
     deleteInfo = () => {
         this.setState({showConfirmDeleteDialog: true});
     }
@@ -101,9 +105,12 @@ class InfoShowView extends ListBaseView {
         this.props.dispatch(deleteInfoItem(this.props.param.showId));
     }
 
-    constructor() {
-        super();
-        this.state = {showConfirmDeleteDialog: false};
+    editInfo = () => {
+        this.goView("edit", {action: "edit", item: this.props.currentInfoItem});
+    }
+
+    renderDetailItem = (item) => {
+        return (<InfoDetailExpandItem item={item} key={item.id} />)
     }
 
     componentDidMount() {
@@ -127,17 +134,6 @@ class InfoShowView extends ListBaseView {
         setTimeout(() => this.goBack(), 1000);
     }
 
-    editInfo = () => {
-        let view = RouteService.getViewByDirection(this.viewName,
-                                                   "edit",
-                                                   {action: "edit", item: this.props.currentInfoItem});
-        this.props.navigator.push(view);
-    }
-
-    renderDetailItem = (item) => {
-        return (<InfoDetailExpandItem item={item} key={item.id} />)
-    }
-
     render() {
         let detailList = this.createListDataSource(null),
             infoItem = this.props.currentInfoItem ? this.props.currentInfoItem : {},
@@ -154,7 +150,7 @@ class InfoShowView extends ListBaseView {
                         style={style.headerToolbar}
                         titleColor="#fff"
                         navIconName="chevron-left"
-                        onIconClicked={this.goBack.bind(this)}
+                        onIconClicked={this.goBack}
                         title={this.locale.showInfoTitle}
                     />
                 </View>

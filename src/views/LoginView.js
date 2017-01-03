@@ -5,7 +5,6 @@ import {connect} from "react-redux";
 import {Input, Button, Loading, Notice} from "../components";
 import {userLogin, resetUserLoginStatus} from "../actions/LoginViewActions";
 import {setUserPassword} from "../actions/UserActions";
-import RouteService from "../services/RouteService";
 import ColorConfig from "../configs/ColorConfig";
 import StatusCode from "../configs/StatusCode";
 import BaseView from "./BaseView";
@@ -80,10 +79,8 @@ class LoginView extends BaseView {
     }
 
     goInfoListView() {
-        let view = RouteService.getViewByDirection(this.viewName, "forward");
-
         this.refs.password.clearValue();
-        this.props.navigator.push(view);
+        this.goView("forward");
     }
 
     render() {
