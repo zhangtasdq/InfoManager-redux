@@ -32,7 +32,9 @@ const StatusCodeConfig = {
     restoreInfoFailed: 24,
 
     deleteInfoFinish: 25,
-    updateInfoFinish: 26
+    updateInfoFinish: 26,
+
+    oneDriveClientIdIsBlank: 27
 };
 
 export default StatusCodeConfig;

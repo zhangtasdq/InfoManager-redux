@@ -52,9 +52,24 @@ class InfoService extends BaseService {
         return {id: (new Date()).getTime(), name: "", value: ""};
     }
 
-    backupInfo(callback) {
-        let infoFileName = AppConfig.infoFileName;
+    checkOneDriveConfig() {
+        let oneDriveClientId = AppConfig.oneDriveClientId,
+            result = {};
 
+        if (!oneDriveClientId) {
+            result.error = new Error("oneDriveClientId cant be blank");
+            result.statusCode = StatusCode.oneDriveClientIdIsBlank;
+        }
+        return result;
+    }
+
+    backupInfo(callback) {
+        let checkOneDrive = this.checkOneDriveConfig();
+        if (checkOneDrive.error) {
+            return callback(checkOneDrive.error, checkOneDrive.statusCode);
+        }
+
+        let infoFileName = AppConfig.infoFileName;
         this.getFileContent(infoFileName, (fileError, responseCode, data) => {
             if (fileError) {
                 callback(fileError, responseCode);
@@ -76,6 +91,12 @@ class InfoService extends BaseService {
     }
 
     restoreInfo(callback) {
+        let checkOneDrive = this.checkOneDriveConfig();
+
+        if (checkOneDrive.error) {
+            return callback(checkOneDrive.error, checkOneDrive.statusCode);
+        }
+
         let infoFileName = AppConfig.infoFileName,
             clientId = AppConfig.oneDriveClientId,
             scope = AppConfig.oneDriveScope;

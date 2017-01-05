@@ -42,7 +42,8 @@ let language = {
         backupFailed: "备份失败，请稍候重试!",
         backupSuccess: "备份成功!",
         restoreInfoFailed: "还原信息失败，请稍候重试!",
-        deleteSuccess: "删除成功!"
+        deleteSuccess: "删除成功!",
+        needSetOneDriveClientId: "请配置您的 oneDriveClientId!"
     }
 }
 

@@ -5,6 +5,8 @@ const LOAD_LOCAL_INFO_SUCCESS = "Load Local Info Success";
 const LOAD_LOCAL_INFO_FAILED = "Load Local Info Failed";
 const RESET_LOAD_LOCAL_INFO_STATUS = "Reset Load Local Info Status";
 
+import {Notice} from "../components";
+
 function loadLocalInfoBegin() {
     return {type: LOAD_LOACAL_INFO_BEGIN};
 }
@@ -82,8 +84,8 @@ function restoreInfoSuccess() {
     return {type: RESTORE_INFO_SUCCESS};
 }
 
-function restoreInfoFailed() {
-    return {type: RESTORE_INFO_FAILED};
+function restoreInfoFailed(statudCode) {
+    return {type: RESTORE_INFO_FAILED, statudCode};
 }
 
 function reseetRestoreStatus() {
@@ -93,9 +95,10 @@ function reseetRestoreStatus() {
 function restoreInfo() {
     return (dispatch) => {
         dispatch(restoreInfoBegin());
-        InfoService.restoreInfo((restoreError) => {
+        InfoService.restoreInfo((restoreError, statudCode) => {
+            Notice.show(statudCode);
             if (restoreError) {
-                dispatch(restoreInfoFailed());
+                dispatch(restoreInfoFailed(statudCode));
             } else {
                 dispatch(restoreInfoSuccess());
             }

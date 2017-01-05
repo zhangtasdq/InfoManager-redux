@@ -9,6 +9,7 @@ const initState = {
     backupInfoStatus: null,
     backupStatusCode: null,
     restoreInfoStatus: null,
+    restoreStatusCode: null
 }
 
 function infoList(state = initState, action) {
@@ -40,9 +41,9 @@ function infoList(state = initState, action) {
         case InfoListActions.RESTORE_INFO_SUCCESS:
             return {...state, restoreInfoStatus: StatusCode.restoreInfoSuccess};
         case InfoListActions.RESTORE_INFO_FAILED:
-            return {...state, restoreInfoStatus: StatusCode.restoreInfoFailed};
+            return {...state, restoreInfoStatus: StatusCode.restoreInfoFailed, restoreStatusCode: action.statusCode};
         case InfoListActions.RESET_RESTORE_INFO_STATUS:
-            return {...state, restoreInfoStatus: null};
+            return {...state, restoreInfoStatus: null, restoreStatusCode: null};
 
         case InfoListActions.CHANGE_ACTIVE_CATEGORY:
             return {...state, activeCategory: action.activeCategory};
