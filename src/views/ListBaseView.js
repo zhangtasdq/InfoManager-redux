@@ -16,8 +16,8 @@ const style = StyleSheet.create({
 class ListBaseView extends BaseView {
     createListDataSource(datas) {
         let dataSource = new ListView.DataSource({
-            rowHasChanged: (r1, rw) => {
-                return r1.id !== r2.id;
+            rowHasChanged: (r1, r2) => {
+                return r1 !== r2;
             }
         });
 

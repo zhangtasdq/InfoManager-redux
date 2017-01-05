@@ -6,11 +6,14 @@ import ColorConfig from "../configs/ColorConfig";
 
 const style = StyleSheet.create({
     container: {
-        flex: 1,
-        flexDirection: "row",
+        height: 40,
         paddingTop: 6,
-        paddingBottom: 6,
-        paddingLeft: 6
+        paddingBottom: 6
+    },
+
+    content: {
+        flex: 1,
+        flexDirection: "row"
     },
 
     name: {
@@ -34,8 +37,8 @@ class InfoDetailItem extends Component {
         let touchColor = ColorConfig.listItemTouchColor;
 
         return (
-            <TouchableHighlight  onPress={this.clickItem} underlayColor={touchColor} >
-                <View style={style.container}>
+            <TouchableHighlight  style={style.container} onPress={this.clickItem} underlayColor={touchColor} >
+                <View style={style.content}>
                     <Text style={style.name}>{this.props.item.name}</Text>
                     <Icon style={style.icon} name="angle-right" size={24} />
                 </View>
