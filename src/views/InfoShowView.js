@@ -110,9 +110,10 @@ class InfoShowView extends ListBaseView {
     componentDidMount() {
         this.props.dispatch(setCurrentItem(this.props.param.showId));
     }
+    i = 1;
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish) {
+        if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish && nextProps.saveInfoToLocalStatus === null) {
             this.props.dispatch(saveInfoToLocal(this.props.allInfos, this.props.userPassword));
         }
         if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish &&
@@ -160,6 +161,7 @@ class InfoShowView extends ListBaseView {
 
                        <ListView
                            dataSource={detailList}
+                           enableEmptySections={true}
                            renderRow={this.renderDetailItem}
                        />
 
