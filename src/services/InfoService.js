@@ -136,12 +136,16 @@ class InfoService extends BaseService {
 
     getInfoCategories(infos) {
         let result = [],
+            categoryNames = [],
             id = 1;
 
         for(let key in infos) {
             let item = infos[key];
-            result.push({name: item.category, id: id++});
+            if (categoryNames.indexOf(item.category) === -1) {
+                categoryNames.push(item.category);
+            }
         }
+        result = categoryNames.map((name) => ({name: name, id: id++}));
         return result;
     }
 
