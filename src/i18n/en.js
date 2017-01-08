@@ -43,7 +43,7 @@ let language = {
         backupSuccess: "Backup successful!",
         restoreInfoFailed: "Failed to restore the information. Please try again later!",
         deleteSuccess: "Successfully Deleted!",
-        needSetOneDriveClientId: "Please set oneDriveClientId!"
+        oneDriveUnavailable: "OneDrive unavailable!"
     }
 }
 

@@ -184,17 +184,13 @@ class InfoListView extends ListBaseView {
             this.props.dispatch(resetLoadLocalInfoStatus())
         }
 
-        if (nextProps.backupInfoStatus === StatusCode.backupInfoFailed) {
-            if (nextProps.backupStatusCode === StatusCode.oneDriveClientIdIsBlank) {
-                Notice.show(this.locale.notice.needSetOneDriveClientId);
-            }
+        if (nextProps.backupInfoStatus === StatusCode.oneDriveUnavailable) {
+            Notice.show(this.locale.notice.oneDriveUnavailable);
             this.props.dispatch(resetBackupInfoStatus());
         }
 
-        if (nextProps.restoreInfoStatus === StatusCode.restoreInfoFailed) {
-            if (nextProps.restoreStatusCode === StatusCode.oneDriveClientIdIsBlank) {
-                Notice.show(this.locale.notice.needSetOneDriveClientId);
-            }
+        if (nextProps.restoreInfoStatus === StatusCode.oneDriveUnavailable) {
+            Notice.show(this.locale.notice.oneDriveUnavailable);
             this.props.dispatch(reseetRestoreStatus());
         }
     }
@@ -287,9 +283,7 @@ function select(state) {
         loadLocalInfos: state.infoListView.loadLocalInfos,
         loadLocalInfoStatus: state.infoListView.loadLocalInfoStatus,
         backupInfoStatus: state.infoListView.backupInfoStatus,
-        backupStatusCode: state.infoListView.backupStatusCode,
-        restoreInfoStatus: state.infoListView.restoreInfoStatus,
-        restoreStatusCode: state.infoListView.restoreStatusCode
+        restoreInfoStatus: state.infoListView.restoreInfoStatus
     }
 }
 

@@ -58,7 +58,7 @@ class InfoService extends BaseService {
 
         if (!oneDriveClientId) {
             result.error = new Error("oneDriveClientId cant be blank");
-            result.statusCode = StatusCode.oneDriveClientIdIsBlank;
+            result.statusCode = StatusCode.oneDriveUnavailable;
         }
         return result;
     }

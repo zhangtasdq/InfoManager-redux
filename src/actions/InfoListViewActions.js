@@ -50,7 +50,7 @@ function backupInfoSuccess() {
 }
 
 function backupInfoFailed(error, statusCode) {
-    return {type: BACKUP_INFO_FAILED, statusCode: statusCode};
+    return {type: BACKUP_INFO_FAILED, statusCode};
 }
 
 function resetBackupInfoStatus() {
@@ -96,7 +96,6 @@ function restoreInfo() {
     return (dispatch) => {
         dispatch(restoreInfoBegin());
         InfoService.restoreInfo((restoreError, statudCode) => {
-            Notice.show(statudCode);
             if (restoreError) {
                 dispatch(restoreInfoFailed(statudCode));
             } else {
