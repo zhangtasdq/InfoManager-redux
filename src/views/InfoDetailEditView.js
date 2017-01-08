@@ -66,7 +66,7 @@ class InfoDetailEditView extends BaseView {
         }
 
         if (tools.isEmpty(value)) {
-            Notice.show(this.locale.propertyContentCantBeEmpty);
+            Notice.show(this.locale.notice.propertyContentCantBeEmpty);
             return;
         }
         currentItem.name = name;
