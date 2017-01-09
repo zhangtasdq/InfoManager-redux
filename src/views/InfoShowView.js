@@ -61,6 +61,7 @@ const style = StyleSheet.create({
         borderRadius: 4,
         marginBottom: 16,
         color: "#fff",
+        fontSize: 16,
         backgroundColor: ColorConfig.detailListHeaderBg
     },
 
@@ -110,7 +111,6 @@ class InfoShowView extends ListBaseView {
     componentDidMount() {
         this.props.dispatch(setCurrentItem(this.props.param.showId));
     }
-    i = 1;
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish && nextProps.saveInfoToLocalStatus === null) {

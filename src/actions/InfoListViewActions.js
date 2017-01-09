@@ -84,8 +84,8 @@ function restoreInfoSuccess() {
     return {type: RESTORE_INFO_SUCCESS};
 }
 
-function restoreInfoFailed(statudCode) {
-    return {type: RESTORE_INFO_FAILED, statudCode};
+function restoreInfoFailed(statusCode) {
+    return {type: RESTORE_INFO_FAILED, statusCode};
 }
 
 function reseetRestoreStatus() {
@@ -95,9 +95,9 @@ function reseetRestoreStatus() {
 function restoreInfo() {
     return (dispatch) => {
         dispatch(restoreInfoBegin());
-        InfoService.restoreInfo((restoreError, statudCode) => {
+        InfoService.restoreInfo((restoreError, statusCode) => {
             if (restoreError) {
-                dispatch(restoreInfoFailed(statudCode));
+                dispatch(restoreInfoFailed(statusCode));
             } else {
                 dispatch(restoreInfoSuccess());
             }
