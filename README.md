@@ -3,6 +3,9 @@ InfoManger
 A very small information management tool，You can save the encrypted information to `OneDrive`，
 And restore from `OneDrive`. Developed using `react-native + redux`. Currently only supports `Android`.
 
+Screenshot
+---
+![InfoManager](./screenshot/infomanager.gif)
 
 Development Background
 ---
@@ -12,7 +15,6 @@ Features
 ---
 1. This application does not save passwords for encrypted messages, so you must keep in mind your password.
 2. You can back up the encrypted information to `OneDrive`, And restore it from` OneDrive` to avoid losing information。
-3. Fill in the password to avoid the password is too simple.
 
 The login process
 ---
