@@ -23,8 +23,6 @@ const ColorConfig = {
     footerBg: mainColor,
     loginPanelBorderColor: "#49a7e7",
 
-    loadingColor: mainColor,
-
     listItemTouchColor: "#049ff1",
     listActiveBg: mainColor,
     listSplitLine: "#ddd",

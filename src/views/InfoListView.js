@@ -22,7 +22,7 @@ import {
     backupInfo,
     resetBackupInfoStatus,
     restoreInfo,
-    reseetRestoreStatus,
+    resetRestoreStatus,
     changeActiveCategory
 } from "../actions/InfoListViewActions";
 import {
@@ -189,9 +189,29 @@ class InfoListView extends ListBaseView {
             this.props.dispatch(resetBackupInfoStatus());
         }
 
+        if (nextProps.backupInfoStatus === StatusCode.backupInfoFailed) {
+            Notice.show(this.locale.notice.backupFailed);
+            this.props.dispatch(resetBackupInfoStatus());
+        }
+
+        if (nextProps.backupInfoStatus === StatusCode.backupInfoSuccess) {
+            Notice.show(this.locale.notice.backupSuccess);
+            this.props.dispatch(resetBackupInfoStatus());
+        }
+
         if (nextProps.restoreInfoStatus === StatusCode.oneDriveUnavailable) {
             Notice.show(this.locale.notice.oneDriveUnavailable);
-            this.props.dispatch(reseetRestoreStatus());
+            this.props.dispatch(resetRestoreStatus());
+        }
+
+        if (nextProps.restoreInfoStatus === StatusCode.restoreInfoFailed) {
+            Notice.show(this.locale.notice.restoreInfoFailed);
+            this.props.dispatch(resetRestoreStatus());
+        }
+
+        if (nextProps.restoreInfoStatus === StatusCode.restoreInfoSuccess) {
+            this.props.dispatch(loadLocalInfo(this.props.userPassword));
+            this.props.dispatch(resetRestoreStatus());
         }
     }
 

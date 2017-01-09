@@ -3,6 +3,9 @@ InfoManger
 一个非常小的信息管理工具，会对保存的信息进行加密，可以将加密后的信息保存到 `OneDrive`，
 也可以从 `OneDrive` 还原，使用 `react-native + redux` 开发，目前只支持 `Android`。
 
+截图
+---
+![InfoManager](./screenshot/infomanager.gif)
 
 开发的目的
 ---
@@ -12,7 +15,6 @@ InfoManger
 ---
 1. 本应用不保存加密信息的密码，所以您必须牢记您的密码。
 2. 可以将加密后的信息备份到 `OneDrive`， 也可以从 `OneDrive` 还原，避免信息丢失。
-3. 对密码进行填充，避免密码过于简单。
 
 登录过程
 ---

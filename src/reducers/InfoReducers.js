@@ -1,5 +1,6 @@
 import * as InfoActions from "../actions/InfoActions";
 import StatusCode from "../configs/StatusCode";
+import Notice from "../components/Notice";
 
 const initState = {
     infos: {},
@@ -25,21 +26,14 @@ function info(state = initState, action) {
             return {...state, createNewInfoStatus: null};
 
         case InfoActions.DELETE_INFO_ITEM:
-            let newInfos = {...state.infos};
-            delete newInfos[action.deleteId];
-            return {...state, infos: newInfos, deleteInfoStatus: StatusCode.deleteInfoFinish};
+            delete state.infos[action.deleteId];
+            return {...state, deleteInfoStatus: StatusCode.deleteInfoFinish};
         case InfoActions.RESET_DELETE_INFO_STATUS:
             return {...state, deleteInfoStatus: null};
 
         case InfoActions.UPDATE_INFO_ITEM:
-            return {
-                ...state,
-                infos: {
-                    ...state.infos,
-                    [action.updateItem.id] : action.updateItem
-                },
-                updateInfoStatus: StatusCode.updateInfoFinish
-            };
+            state.infos[action.updateItem.id] = action.updateItem;
+            return { ...state, updateInfoStatus: StatusCode.updateInfoFinish };
         case InfoActions.RESET_UPDATE_INFO_STATUS:
             return {...state, updateInfoStatus: null};
 

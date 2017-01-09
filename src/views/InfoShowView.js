@@ -61,6 +61,7 @@ const style = StyleSheet.create({
         borderRadius: 4,
         marginBottom: 16,
         color: "#fff",
+        fontSize: 16,
         backgroundColor: ColorConfig.detailListHeaderBg
     },
 
@@ -112,7 +113,7 @@ class InfoShowView extends ListBaseView {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish) {
+        if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish && nextProps.saveInfoToLocalStatus === null) {
             this.props.dispatch(saveInfoToLocal(this.props.allInfos, this.props.userPassword));
         }
         if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish &&
@@ -160,6 +161,7 @@ class InfoShowView extends ListBaseView {
 
                        <ListView
                            dataSource={detailList}
+                           enableEmptySections={true}
                            renderRow={this.renderDetailItem}
                        />
 

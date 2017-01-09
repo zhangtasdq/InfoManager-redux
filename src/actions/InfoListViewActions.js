@@ -84,20 +84,20 @@ function restoreInfoSuccess() {
     return {type: RESTORE_INFO_SUCCESS};
 }
 
-function restoreInfoFailed(statudCode) {
-    return {type: RESTORE_INFO_FAILED, statudCode};
+function restoreInfoFailed(statusCode) {
+    return {type: RESTORE_INFO_FAILED, statusCode};
 }
 
-function reseetRestoreStatus() {
+function resetRestoreStatus() {
     return {type: RESET_RESTORE_INFO_STATUS};
 }
 
 function restoreInfo() {
     return (dispatch) => {
         dispatch(restoreInfoBegin());
-        InfoService.restoreInfo((restoreError, statudCode) => {
+        InfoService.restoreInfo((restoreError, statusCode) => {
             if (restoreError) {
-                dispatch(restoreInfoFailed(statudCode));
+                dispatch(restoreInfoFailed(statusCode));
             } else {
                 dispatch(restoreInfoSuccess());
             }
@@ -130,7 +130,7 @@ export {
     RESTORE_INFO_FAILED,
     RESET_RESTORE_INFO_STATUS,
     restoreInfo,
-    reseetRestoreStatus,
+    resetRestoreStatus,
 
     CHANGE_ACTIVE_CATEGORY,
     changeActiveCategory
