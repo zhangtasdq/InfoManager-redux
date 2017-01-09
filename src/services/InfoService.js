@@ -72,17 +72,17 @@ class InfoService extends BaseService {
         let infoFileName = AppConfig.infoFileName;
         this.getFileContent(infoFileName, (fileError, responseCode, data) => {
             if (fileError) {
-                callback(fileError, responseCode);
+                callback(fileError, StatusCode.backupInfoFailed);
                 return;
             }
             if (responseCode === StatusCode.fileNotExist) {
                 let error = new Error("File Not Exist");
-                callback(error, StatusCode.fileNotExist);
+                callback(error, StatusCode.backupInfoFailed);
                 return;
             }
             OneDriveTool.saveFile(infoFileName, data, AppConfig.oneDriveClientId, AppConfig.oneDriveScope, (oneDriveError) => {
                 if (oneDriveError) {
-                    callback(oneDriveError, StatusCode.backupOneDriveError);
+                    callback(oneDriveError, StatusCode.backupInfoFailed);
                 } else {
                     callback(null);
                 }
@@ -103,15 +103,19 @@ class InfoService extends BaseService {
 
         OneDriveTool.isFileExists(infoFileName, clientId, scope, (onedriveFileExistsError, isExist) => {
             if (onedriveFileExistsError) {
-                return callback(onedriveFileExistsError);
+                return callback(onedriveFileExistsError, StatusCode.restoreInfoFailed);
             }
             if (isExist) {
                 OneDriveTool.downloadFile(infoFileName, clientId, scope, (downloadError, fileData) => {
                     if (downloadError) {
-                        return callback(downloadError);
+                        return callback(downloadError, StatusCode.restoreInfoFailed);
                     } else {
                         FileTool.saveFileContent(infoFileName, fileData, (saveFileError) => {
-                            callback(saveFileError);
+                            if (saveFileError) {
+                                callback(saveFileError, StatusCode.restoreInfoFailed);
+                            } else {
+                                callback(null);
+                            }
                         });
                     }
                     callback(downloadError);

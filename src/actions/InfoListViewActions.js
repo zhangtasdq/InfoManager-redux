@@ -88,7 +88,7 @@ function restoreInfoFailed(statusCode) {
     return {type: RESTORE_INFO_FAILED, statusCode};
 }
 
-function reseetRestoreStatus() {
+function resetRestoreStatus() {
     return {type: RESET_RESTORE_INFO_STATUS};
 }
 
@@ -130,7 +130,7 @@ export {
     RESTORE_INFO_FAILED,
     RESET_RESTORE_INFO_STATUS,
     restoreInfo,
-    reseetRestoreStatus,
+    resetRestoreStatus,
 
     CHANGE_ACTIVE_CATEGORY,
     changeActiveCategory
