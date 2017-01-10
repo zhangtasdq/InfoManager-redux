@@ -15,6 +15,7 @@ InfoManger
 ---
 1. 本应用不保存加密信息的密码，所以您必须牢记您的密码。
 2. 可以将加密后的信息备份到 `OneDrive`， 也可以从 `OneDrive` 还原，避免信息丢失。
+3. 多语言支持
 
 登录过程
 ---
@@ -26,10 +27,13 @@ InfoManger
 
 1. 搭建 [React-Native](http://facebook.github.io/react-native/docs/getting-started.html#content) 的开发环境
 2. 安装依赖包
+
 ```shell
 yarn install
 ```
-3. 运行
+
+ 3.运行
+
 ```shell
 react-native run-android
 ```
@@ -44,4 +48,6 @@ OneDrive
 
 最后
 ---
->如果您有什么意见或者建议请您告诉我，谢谢！ ^_^
+>我不知道该怎么设计 `state`, 如果您有其它的设计方式希望您能告诉我，谢谢!
+
+>如果您有什么意见或者建议请您告诉我，谢谢! :)
