@@ -114,7 +114,7 @@ class InfoShowView extends ListBaseView {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish && nextProps.saveInfoToLocalStatus === null) {
-            this.props.dispatch(saveInfoToLocal(this.props.allInfos, this.props.userPassword));
+            this.props.dispatch(saveInfoToLocal(nextProps.allInfos, nextProps.userPassword));
         }
         if (nextProps.deleteInfoStatus === StatusCode.deleteInfoFinish &&
             nextProps.saveInfoToLocalStatus === StatusCode.saveInfoToLocalSuccess) {

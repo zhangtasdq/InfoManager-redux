@@ -29,12 +29,12 @@ const style = StyleSheet.create({
 class Input extends Component {
     state = {
         focus: false,
-        value: ""
     };
+    currentValue = "";
 
     handleOnBlur = () => {
         if (this.props.onBlur) {
-            this.props.onBlur(this.state.value);
+            this.props.onBlur(this.currentValue);
         }
         this.setState({focus: false});
     };
@@ -43,23 +43,17 @@ class Input extends Component {
         this.setState({focus: true});
     }
 
-
-    handleOnChange = (event) => {
-        this.setState({value: event.nativeEvent.text});
-    }
-
-    componentWillReceiveProps(props) {
-        if (props.value) {
-            this.setState({value: props.value});
-        }
+    handleOnChange = (value) => {
+        this.currentValue = value;
     }
 
     getCurrentValue() {
-        return this.state.value;
+        return this.currentValue;
     }
 
     clearValue() {
-        this.setState({value: ""});
+        this.currentValue = "";
+        this.refs.input.clear();
     }
 
     render() {
@@ -70,14 +64,14 @@ class Input extends Component {
         return (
             <TextInput
                 ref="input"
-                value={this.state.value}
+                value={this.props.value}
                 style={inputStyle}
                 secureTextEntry={isSecure}
                 underlineColorAndroid="transparent"
                 placeholder={placeholder}
                 onBlur={this.handleOnBlur}
                 onFocus={this.handleOnFocus}
-                onChange={this.handleOnChange}
+                onChangeText={this.handleOnChange}
             />
         );
     }
