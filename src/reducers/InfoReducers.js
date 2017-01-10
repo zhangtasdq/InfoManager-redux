@@ -12,28 +12,27 @@ const initState = {
 }
 
 function info(state = initState, action) {
+    let infos = {...state.infos};
+
     switch (action.type) {
         case InfoActions.SET_INFOS:
             return {...state, infos: action.infos};
 
         case InfoActions.CREATE_NEW_INFO:
-            return {
-                ...state,
-                infos: {...state.infos, [action.newInfo.id] : action.newInfo},
-                createNewInfoStatus: StatusCode.createNewInfoFinish
-            }
+            infos[action.newInfo.id] = action.newInfo;
+            return { ...state, infos, createNewInfoStatus: StatusCode.createNewInfoFinish }
         case InfoActions.RESET_CREATE_INFO_STATUS:
             return {...state, createNewInfoStatus: null};
 
         case InfoActions.DELETE_INFO_ITEM:
-            delete state.infos[action.deleteId];
-            return {...state, deleteInfoStatus: StatusCode.deleteInfoFinish};
+            delete infos[action.deleteId];
+            return {...state, infos, deleteInfoStatus: StatusCode.deleteInfoFinish};
         case InfoActions.RESET_DELETE_INFO_STATUS:
             return {...state, deleteInfoStatus: null};
 
         case InfoActions.UPDATE_INFO_ITEM:
-            state.infos[action.updateItem.id] = action.updateItem;
-            return { ...state, updateInfoStatus: StatusCode.updateInfoFinish };
+            infos[action.updateItem.id] = action.updateItem;
+            return { ...state, infos, updateInfoStatus: StatusCode.updateInfoFinish };
         case InfoActions.RESET_UPDATE_INFO_STATUS:
             return {...state, updateInfoStatus: null};
 
