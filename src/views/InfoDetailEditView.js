@@ -140,8 +140,8 @@ class InfoDetailEditView extends BaseView {
                 </Header>
 
                 <View style={style.body}>
-                    <FormControl value={currentItem.name} ref="propertyName" label={this.locale.propertyNameLabel} placeholder={this.locale.placeholder.inputPropertyName} />
-                    <FormControl value={currentItem.value} ref="propertyContent" label={this.locale.propertyValueLabel} placeholder={this.locale.placeholder.inputPropertyValue} />
+                    <FormControl defaultValue={currentItem.name} ref="propertyName" label={this.locale.propertyNameLabel} placeholder={this.locale.placeholder.inputPropertyName} />
+                    <FormControl defaultValue={currentItem.value} ref="propertyContent" label={this.locale.propertyValueLabel} placeholder={this.locale.placeholder.inputPropertyValue} />
                 </View>
 
                 {this.getFooterActionsView()}
