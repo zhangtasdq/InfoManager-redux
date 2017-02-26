@@ -56,6 +56,12 @@ class Input extends Component {
         this.refs.input.clear();
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.defaultValue) {
+            this.currentValue = nextProps.defaultValue;
+        }
+    }
+
     render() {
         let inputStyle = this.state.focus ? style.focusStyle : style.normalStyle,
             isSecure = !!this.props.secureTextEntry,
@@ -64,7 +70,7 @@ class Input extends Component {
         return (
             <TextInput
                 ref="input"
-                value={this.props.value}
+                defaultValue={this.props.defaultValue}
                 style={inputStyle}
                 secureTextEntry={isSecure}
                 underlineColorAndroid="transparent"

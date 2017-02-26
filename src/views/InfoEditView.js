@@ -187,8 +187,8 @@ class InfoEditView extends ListBaseView {
                 </Header>
 
                 <View style={style.body}>
-                    <FormControl value={currentInfo.title} ref="title" label={this.locale.title} />
-                    <FormControl value={currentInfo.category} ref="category" label={this.locale.category} />
+                    <FormControl defaultValue={currentInfo.title} ref="title" label={this.locale.title} />
+                    <FormControl defaultValue={currentInfo.category} ref="category" label={this.locale.category} />
 
                     <View style={style.detailContainer} >
                         <View style={style.detailHeader} >
